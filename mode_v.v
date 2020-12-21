@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module mode_v(clk, rst_n, main_switch, adm_mode,switch_plus,switch_minus, confirm, return, finish, sum, money);
+module mode_v(clk, rst_n, main_switch, adm_mode,switch_plus,switch_minus, confirm, return, finish, state);
 input clk, rst_n,
      main_switch,
      adm_mode,
@@ -29,7 +29,7 @@ input clk, rst_n,
      finish,
      sum, money;
 
-reg [9:0]state = 4'b0000;
+output reg [9:0]state = 4'b0000;
 
 
 parameter S_OFF = 4'b0000,
