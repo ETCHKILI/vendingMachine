@@ -82,7 +82,7 @@ parameter S_OFF = 4'b0000,
                 5'b0xxxx: state <= S_OFF;
                 5'b11xxx: state <= S_ADM1;
                 5'b101xx,5'b1001x, 5'b10001: state <= S_FAILURE;
-                default: state = S_PAYMENT;
+                default: state <= S_PAYMENT;
             endcase
             
 
@@ -91,7 +91,7 @@ parameter S_OFF = 4'b0000,
                 5'b0xxxx: state <= S_OFF;
                 5'b11xxx: state <= S_ADM1;
                 5'b101xx, 5'b1001x, 5'b10001: state <= S_INQUIRE;
-                default: state = S_SUCCESS;
+                default: state <= S_SUCCESS;
             endcase
 
             S_ADM1:
@@ -101,7 +101,7 @@ parameter S_OFF = 4'b0000,
                 5'b111xx: state <= S_ADM2;
                 5'b1101x: state <= S_ADM3;
                 5'b11001: state <= S_ADM_INQUIRE;
-                default: state = S_ADM1;
+                default: state <= S_ADM1;
             endcase
 
             S_ADM2:
@@ -111,7 +111,7 @@ parameter S_OFF = 4'b0000,
                 5'b111xx: state <= S_ADM3;
                 5'b1101x: state <= S_ADM1;
                 5'b11001: state <= S_RESET;
-                default: state = S_ADM2;
+                default: state <= S_ADM2;
             endcase
 
             S_ADM3:
@@ -121,7 +121,7 @@ parameter S_OFF = 4'b0000,
                 5'b111xx: state <= S_ADM1;
                 5'b1101x: state <= S_ADM2;
                 5'b11001: state <= S_SALE_AMOUNT;
-                default: state = S_ADM3;
+                default: state <= S_ADM3;
             endcase
 
             S_ADM_INQUIRE:
