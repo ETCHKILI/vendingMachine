@@ -23,15 +23,15 @@
 
 
 /*
-×Ô¶¯ÊÛ»õ»ú£¬¶¥²ãÄ£¿é
-    stateºÍid¶¼ÔÚ¶¥²ãÄ£¿é±ä»¯
-        state£º
-        0.¹Ø»ú
-        1.Ñ¡Ôñ½×¶Î
-        2.ÊıÁ¿
-        3.Âò
-        4.ÕÒ
-        5.¹ÜÀíÔ±
+è‡ªåŠ¨å”®è´§æœºï¼Œé¡¶å±‚æ¨¡å—
+    stateå’Œidéƒ½åœ¨é¡¶å±‚æ¨¡å—å˜åŒ–
+        stateï¼š
+        0.å…³æœº
+        1.é€‰æ‹©é˜¶æ®µ
+        2.æ•°é‡
+        3.ä¹°
+        4.æ‰¾
+        5.ç®¡ç†å‘˜
         
         id  name    price
         0.  chip    3   
@@ -41,28 +41,28 @@
 */
 module vending_machine(
         input 
-        rawClk,//Ô­Ê¼Ê±ÖÓ
+        rawClk,//åŸå§‹æ—¶é’Ÿ
 
-        mSwitch,//×Ü¿ª¹Ø
-        mode,//Ä£Ê½ÇĞ»»¿ª¹Ø£¬ÆÕÍ¨Ä£Ê½ 0 vs ¹ÜÀíÔ±Ä£Ê½ 1 
+        mSwitch,//æ€»å¼€å…³
+        mode,//æ¨¡å¼åˆ‡æ¢å¼€å…³ï¼Œæ™®é€šæ¨¡å¼ 0 vs ç®¡ç†å‘˜æ¨¡å¼ 1 
         
-        initialize,//¹ÜÀíÔ±³õÊ¼»¯¿ª¹Ø
+        initialize,//ç®¡ç†å‘˜åˆå§‹åŒ–å¼€å…³
         
-        plus,//¹ºÂò»ò²¹»õÊ±£¬ÎïÆ·ÊıÁ¿ ¼Ó µÄ¿ª¹Ø
-        minus,//¹ºÂò»ò²¹»õÊ±£¬ÎïÆ·ÊıÁ¿ ¼õ µÄ¿ª¹Ø
+        plus,//è´­ä¹°æˆ–è¡¥è´§æ—¶ï¼Œç‰©å“æ•°é‡ åŠ  çš„å¼€å…³
+        minus,//è´­ä¹°æˆ–è¡¥è´§æ—¶ï¼Œç‰©å“æ•°é‡ å‡ çš„å¼€å…³
         
-        prev,//Ñ¡ÔñÊ± Ç°Ò»¸ö£¬ºóÒ»¸ö µÄ°´Å¥
+        prev,//é€‰æ‹©æ—¶ å‰ä¸€ä¸ªï¼Œåä¸€ä¸ª çš„æŒ‰é’®
         next,
         
-        choiceConfirm,//È·ÈÏÉÌÆ·
-        buyConfirm,//È·ÈÏ¹ºÂòÊıÁ¿
-        payConfirm,//È·ÈÏÖ§¸¶µÄ¿ª¹Ø
-        back,//´Ópay½×¶Î·µ»Øselect½×¶Î
+        choiceConfirm,//ç¡®è®¤å•†å“
+        buyConfirm,//ç¡®è®¤è´­ä¹°æ•°é‡
+        payConfirm,//ç¡®è®¤æ”¯ä»˜çš„å¼€å…³
+        back,//ä»payé˜¶æ®µè¿”å›selecté˜¶æ®µ
         
         pay1,
         pay2,
         pay5,
-        pay10,//Í¶±Ò¿ª¹Ø
+        pay10,//æŠ•å¸å¼€å…³
         
         output 
         reg message
@@ -76,16 +76,16 @@ module vending_machine(
         //reg charge;
         
         reg[3:0] num0;
-        reg[3:0] num1;//¸÷ÉÌÆ·Ê£ÓàÊıÁ¿,×î´ó15
+        reg[3:0] num1;//å„å•†å“å‰©ä½™æ•°é‡,æœ€å¤§15
         reg[3:0] num2;
         reg[3:0] num3;
         
         reg[5:0] sell0;
         reg[5:0] sell1;
-        reg[5:0] sell2;//Âô³öµÄÊıÁ¿,×î´ó63
+        reg[5:0] sell2;//å–å‡ºçš„æ•°é‡,æœ€å¤§63
         reg[5:0] sell3;
         
-        reg[8:0] total;//×Ü½ğ¶î£¬×î´ó511
+        reg[8:0] total;//æ€»é‡‘é¢ï¼Œæœ€å¤§511
         
         always@(posedge rawClk,negedge mSwitch) begin
             if(~mSwitch) begin
@@ -150,7 +150,7 @@ module admin(
     plus,
     minus,
     
-    initialize,//¹ÜÀíÔ±µÄ³õÊ¼»¯°´Å¥£¬Ê¹ËùÓĞÎïÆ·Ê£ÓàÊıÁ¿¸üĞÂÎª0£¬½öÔÚ¹ÜÀíÔ±Ä£Ê½¿ÉÓÃ
+    initialize,//ç®¡ç†å‘˜çš„åˆå§‹åŒ–æŒ‰é’®ï¼Œä½¿æ‰€æœ‰ç‰©å“å‰©ä½™æ•°é‡æ›´æ–°ä¸º0ï¼Œä»…åœ¨ç®¡ç†å‘˜æ¨¡å¼å¯ç”¨
     
     output
     
@@ -164,11 +164,11 @@ module admin(
 endmodule
 
 /*
-¸¶¿îÄ£¿é
+ä»˜æ¬¾æ¨¡å—
 */
 module payment(
     input
-    timesUp,//0±íÊ¾Ê±¼äµ½
+    timesUp,//0è¡¨ç¤ºæ—¶é—´åˆ°
     
     [2:0]state, 
     [1:0]id,
@@ -184,23 +184,23 @@ module payment(
     pay1,
     pay2,
     pay5,
-    pay10,//Í¶±Ò¿ª¹Ø
+    pay10,//æŠ•å¸å¼€å…³
         
     output
-    reg [1:0]payNum,//¹ºÂòÊı²»³¬¹ıÈı¼ş
+    reg [1:0]payNum,//è´­ä¹°æ•°ä¸è¶…è¿‡ä¸‰ä»¶
     reg [1:0]payID,//
     
-    reg [5:0]moneyPaid,//ÒÑÍ¶±Ò,²»³¬¹ı63
-    reg [4:0]moneyRequired,//ĞèÒª¸¶,no more than 31
-    reg canPay,//Êä³öÇ®ÊÇ·ñ×ã¹»,0²»¹»£¬1¹»
+    reg [5:0]moneyPaid,//å·²æŠ•å¸,ä¸è¶…è¿‡63
+    reg [4:0]moneyRequired,//éœ€è¦ä»˜,no more than 31
+    reg canPay,//è¾“å‡ºé’±æ˜¯å¦è¶³å¤Ÿ,0ä¸å¤Ÿï¼Œ1å¤Ÿ
     
-    [3:0]payMessageId//¸¶¿îĞÅÏ¢id£¬ÏêÇé¼ûgenerateMessageÄ£¿é
+    [3:0]payMessageId//ä»˜æ¬¾ä¿¡æ¯idï¼Œè¯¦æƒ…è§generateMessageæ¨¡å—
 );
 
 endmodule
 
 /*
-ÕÒÁãÄ£¿é
+æ‰¾é›¶æ¨¡å—
 */
 module charge(
     input
@@ -222,7 +222,7 @@ module charge(
     outNum0,    
     outNum1,
     outNum2,
-    outNum3//¸üĞÂºóµÄ¸÷¸öÊıÁ¿
+    outNum3//æ›´æ–°åçš„å„ä¸ªæ•°é‡
 );
 
 
@@ -230,12 +230,12 @@ endmodule
 
 
 /*
-·ÖÆµÆ÷Éú³ÉÊ±ÖÓ
+åˆ†é¢‘å™¨ç”Ÿæˆæ—¶é’Ÿ
 */
-module freq_div(//Êä³ö1Ãë¼¶Ê±ÖÓ
+module freq_div(//è¾“å‡º1ç§’çº§æ—¶é’Ÿ
     input 
     rawClk,
-    mSwitch,//Ïàµ±ÓÚresetĞÅºÅ£¬ÏÂ½µÑØ·ÖÆµÆ÷¹éÁã
+    mSwitch,//ç›¸å½“äºresetä¿¡å·ï¼Œä¸‹é™æ²¿åˆ†é¢‘å™¨å½’é›¶
     
     output
     reg clk
@@ -243,14 +243,14 @@ module freq_div(//Êä³ö1Ãë¼¶Ê±ÖÓ
 endmodule
 
 /*
-µ¹¼ÆÊ±Ä£¿é
+å€’è®¡æ—¶æ¨¡å—
 */
 module countDown(
     input 
     clk,
     state,    
     output
-    timesUp//0±íÊ¾Ê±¼äµ½
+    timesUp//0è¡¨ç¤ºæ—¶é—´åˆ°
 );
 
 endmodule
@@ -266,9 +266,9 @@ module generateMessage(
 
 endmodule
 
-//module selection(//ÄÚÇ¶Ì×paymentÄ£¿é   ???
+//module selection(//å†…åµŒå¥—paymentæ¨¡å—   ???
 //    input
-//    state,//Ä£Ê½Ö»ÔÚµÍµçÆµÊ±,Ñ¡ÔñÄ£¿éÓĞ×´Ì¬¸Ä±ä£»
+//    state,//æ¨¡å¼åªåœ¨ä½ç”µé¢‘æ—¶,é€‰æ‹©æ¨¡å—æœ‰çŠ¶æ€æ”¹å˜ï¼›
 //    id,
 //    num1,
 //    num2,
