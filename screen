@@ -1,0 +1,145 @@
+module numToLed3D(
+    input [3:0] huns,tens,ones,
+    output [7:0] led_hun,led_ten,led_one
+);
+    numToled l1(tens,led_ten);
+    numToled l2(ones,led_one);    
+endmodule
+
+module numToLed2D(
+    input [3:0] tens,ones,
+    output [7:0] led_ten,led_one
+);
+    numToled l1(tens,led_ten);
+    numToled l2(ones,led_one);
+endmodule
+
+module numToLed(
+    input [3:0] number,
+    output reg [7:0] led
+);
+    always@* begin
+        case(number)
+            0: led[0:7]=8'b11111100;
+            1: led[0:7]=8'b01100000;
+            2: led[0:7]=8'b11011010;
+            3: led[0:7]=8'b11110010;
+            4: led[0:7]=8'b01100110;
+            5: led[0:7]=8'b10110110;
+            6: led[0:7]=8'b10111110;
+            7: led[0:7]=8'b11100000;
+            8: led[0:7]=8'b11111110;
+            9: led[0:7]=8'b11100110;
+        endcase
+    end
+endmodule
+
+module stringToLed(
+    input[4:0] string,
+    output reg[7:0] led
+   
+);
+    always@* begin
+    case(string)
+        0:led[0:7]<=8'b11101110;//a
+        1:led[0:7]<=8'b00111110;
+        2:led[0:7]<=8'b00011010;
+        3:led[0:7]<=8'b01111010;
+        4:led[0:7]<=8'b10011110;
+        5:led[0:7]<=8'b10001110;
+        6:led[0:7]<=8'b10111100;
+        7:led[0:7]<=8'b01101110;
+        8:led[0:7]<=8'b00001000;
+        9:led[0:7]<=8'b01110000;
+        10:led[0:7]<=8'b01011110;
+        11:led[0:7]<=8'b00011100;
+        12:led[0:7]<=8'b10101010;
+        13:led[0:7]<=8'b00101010;
+        14:led[0:7]<=8'b00111010;
+        15:led[0:7]<=8'b11001110;
+        16:led[0:7]<=8'b11100110;
+        17:led[0:7]<=8'b00001010;
+        18:led[0:7]<=8'b00100110;
+        19:led[0:7]<=8'b00011110;
+        20:led[0:7]<=8'b01111100;
+        21:led[0:7]<=8'b01000110;
+        22:led[0:7]<=8'b01010110;
+        23:led[0:7]<=8'b01101100;
+        24:led[0:7]<=8'b01110110;
+        25:led[0:7]<=8'b10010010;//z
+        26:led[0:7]<=8'b00000000;//" "
+        27:led[0:7]<=8'b00000010;//"-"
+    endcase
+    end
+
+endmodule
+
+
+module shift1(//inquire
+    input 
+    clk,//1s
+    idChange,
+    rst_n,
+    [1:0]id,
+    [3:0]num_tens,num_ones//,sell_tens,sell_ones//tmp id's num and sell
+
+
+);
+    wire [19:0]name0=20'b00010_00111_01000_01111;//chip
+    wire [19:0]name1=20'b01100_01000_01011_01010;//milk
+    wire [19:0]name2=20'b00010_01110_01011_00000;//cola
+    wire [19:0]name3=20'b00010_00000_01010_00100;//cake
+        
+    wire[7:0] mes0=8'b00000010;
+    wire[7:0] mes12=8'b00000010;
+    wire [7:0]mes2=0;
+    wire [7:0]mes7=0;
+    wire [7:0]mes10=0;
+    
+    reg [7:0] mes1,mes3,mes4,mes5,mes6,mes8,mes9,mes11;//message;
+    reg [19:0]name;
+    reg [2:0]price;
+   
+    always@(id) begin
+        case(id)
+            0:begin name=name0;price=3;end
+            1:begin name=name1;price=4;end
+            2:begin name=name2;price=5;end
+            3:begin name=name3;price=6;end
+        endcase
+    end
+   
+    
+       
+    numToLed n1(id,mes1);
+    stringToLed n3(name[19:15],mes3);
+    stringToLed n4(name[14:10],mes4);
+    stringToLed n5(name[9:5],mes5);
+    stringToLed n6(name[4:0],mes6);
+    numToLed n8(num_tens,mes8);
+    numToLed n9(num_ones,mes9);
+    numToLed n11(price,mes11);
+    
+    wire[63:0] l;
+    
+    reg[8*13-1:0] message;
+    
+//    always@(mes1,mes3,mes4,mes5,mes6,mes8,mes9,mes11)begin
+//        message={mes0,mes1,mes2,mes3,mes4,mes5,mes6,mes7,mes8,mes9,mes10,mes11,mes12};
+//    end
+    assign l=message[103:40];
+    
+    always@(posedge clk,negedge rst_n,posedge idChange) begin
+        if(~rst_n) begin
+            message<={mes0,mes1,mes2,mes3,mes4,mes5,mes6,mes7,mes8,mes9,mes10,mes11,mes12};
+        end
+        else begin
+            if(idChange) begin
+                message<={mes0,mes1,mes2,mes3,mes4,mes5,mes6,mes7,mes8,mes9,mes10,mes11,mes12};
+            end
+            else begin
+                message<={message[95:0],message[103:96]};
+            end
+        end
+    end
+endmodule
