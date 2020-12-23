@@ -27,19 +27,20 @@ id  name    price
         3.  cake    6
 */
 
-module caculation(clk, rst_n, state, switch_plus, switch_minus, coin1, coin2, coin5, coin10, id, curr_number, curr_snumber, sum, money, change, sale, finish);
+module caculation(clk, rst_n, state, switch_plus, switch_minus, coin1, coin2, coin5, coin10, id, curr_number, curr_snumber, sum, money, change, sale, out);
 input clk, rst_n, 
       switch_plus, switch_minus, 
       coin1, coin2, coin5, coin10;
 input [3:0] state;
 
 output reg [1:0] id;
-output finish;
+output reg [3:0]curr_number = 4'b0, curr_snumber = 4'b0;
+output reg[6:0]sum, money, change;
+output reg [9:0]sale;
+output reg out;
 
+reg [3:0]number;
 
-reg [3:0]curr_number = 4'b0, curr_snumber = 4'b0, number;
-reg [6:0]sum, money, change;//sum: 已经支付金额，money：应付金�??, change: 找零
-reg [9:0]sale;
 
 
 parameter MAX_NUM = 4'b1111;
@@ -84,7 +85,7 @@ case (state)
             default: sum <= sum;
         endcase
    end
-   4'b0110: begin //支付成功，增加销量和�??售金额并对数据清�??
+   4'b0110: begin //支付成功，增加销量和�???售金额并对数据清�???
        case (id)
        2'b00: snumber0 <= snumber0 + number;
        2'b01: snumber1 <= snumber1 + number;
@@ -95,7 +96,7 @@ case (state)
        number <= 4'b0; 
        sum <= 7'b0;
    end
-   4'b1111: begin //添加补货的数�??
+   4'b1111: begin //添加补货的数�???
        case ({switch_plus, switch_minus})
           2'b01: begin
               if (number == 4'b0000) begin
@@ -174,4 +175,14 @@ always@(posedge clk) begin
     end 
 end
 
+always@(posedge clk) begin
+    if(curr_number == 0) begin
+        out <= 1'b1;
+    end
+    else begin
+        out <= 1'b0;
+    end
+end
+
 endmodule
+

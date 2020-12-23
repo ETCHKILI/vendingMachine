@@ -20,34 +20,34 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module mode_v(clk, rst_n, main_switch, adm_mode,switch_plus,switch_minus, confirm, return, finish, state);
+module mode_v(clk, rst_n, main_switch, adm_mode,switch_plus,switch_minus, confirm, return, finish, out, state);
 input clk, rst_n,
      main_switch,
      adm_mode,
      switch_plus,switch_minus,
      confirm, return,
-     finish;
+     finish, out;
 
 output reg [9:0]state = 4'b0000;
 
 
-parameter S_OFF = 4'b0000,//¹Ø»ú×´Ì¬£¬²»ÏÔÊ¾ÈÎºÎÄÚÈÝ
-          S_INQUIRE = 4'b0001,//½øÈë²éÑ¯½×¶Î£¬Ã¿5s×Ô¶¯ÇÐ»»ÉÌÆ·£¬°´ÇÐ»»¼ü£¨plusºÍminus£©ÇÐ»»ÉÌÆ·
-          S_ADD_AMOUNT = 4'b0011,//¸Ä±äÉÌÆ·ÊýÁ¿£¬ÆÁÄ»ÏÔÊ¾ÉÌÆ·ÊýÁ¿ºÍÒÑ¾­Ìí¼ÓµÄÊýÁ¿
-          //ÐèÒª¶ÔÉÌÆ·ÊýÁ¿×öÅÐ¶Ï£¬²»ÄÜÐ¡ÓÚ1»òÕß³¬³öÓàÁ¿
-          S_PAYMENT = 4'b0010,//Í¶±Ò£¬ÆÁÄ»ÏÔÊ¾ÒÑ¾­Ö§¸¶µÄ½ð¶îºÍÓ¦Ö§¸¶µÄ×Ü½ð¶î
-          S_SUCCESS = 4'b0110,//ÆÁÄ»ÏÔÊ¾Ö§¸¶³É¹¦£¬µ¹¼ÆÊ±Ö®ºó×Ô¶¯Ìø×ª£¨×´Ì¬»ú¸ºÔðÌø×ª£¬Ö»ÐèÒª°ÑfinishÐÅºÅÈ¡·´£©
-          S_FAILURE = 4'b0111,//³ýÁËÏÔÊ¾Ö§¸¶Ê§°Ü£¬ÆäËûÍ¬ÉÏ
-          S_ADM1 = 4'b0101,//ÏÔÊ¾inquire
-          S_ADM2 = 4'b0100,//ÏÔÊ¾reset
-          S_ADM3 = 4'b1100,//ÏÔÊ¾sale
-          S_ADM_INQUIRE = 4'b1101,//ÏÔÊ¾ÉÌÆ·ÓàÁ¿
-          S_ADM_ADD = 4'b1111,//ÏÔÊ¾ÉÌÆ·Ãû³ÆºÍÓàÁ¿ºÍÒÑ¾­Ìí¼ÓµÄÊýÁ¿
-          S_RESET = 4'b1110,//ÏÔÊ¾³É¹¦£¬µ¹¼ÆÊ±½áÊøºó°ÑfinishÈ¡·´£¬×´Ì¬»ú×Ô¶¯×ª»»
-          S_SALE_AMOUNT = 4'b1010,//ÏÔÊ¾ÏúÊÛ½ð¶î£¬µ¹¼ÆÊ±½áÊøºófinishÈ¡·´£¬×´Ì¬»ú×Ô¶¯×ª»»
-          S_SUC_ADM = 4'b1011,//²¹»õ³É¹¦ÏÔÊ¾ÐÅÏ¢
-          S_WELCOME = 4'b1001,//¿ª»ú»¶Ó­
-          S_OUT = 4'b1000;//ÉÌÆ·ÒÑ¾­Âô¹â£¬ÏÔÊ¾¡°sold out¡±£¬Ö®ºó»Øµ½¸¶¿î½çÃæ
+parameter S_OFF = 4'b0000,//ï¿½Ø»ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½
+          S_INQUIRE = 4'b0001,//ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½×¶Î£ï¿½Ã¿5sï¿½Ô¶ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½plusï¿½ï¿½minusï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Æ·
+          S_ADD_AMOUNT = 4'b0011,//ï¿½Ä±ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½Ê¾ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
+          //ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½1ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+          S_PAYMENT = 4'b0010,//Í¶ï¿½Ò£ï¿½ï¿½ï¿½Ä»ï¿½ï¿½Ê¾ï¿½Ñ¾ï¿½Ö§ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½Ó¦Ö§ï¿½ï¿½ï¿½ï¿½ï¿½Ü½ï¿½ï¿½
+          S_SUCCESS = 4'b0110,//ï¿½ï¿½Ä»ï¿½ï¿½Ê¾Ö§ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±Ö®ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½×ªï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ö»ï¿½ï¿½Òªï¿½ï¿½finishï¿½Åºï¿½È¡ï¿½ï¿½ï¿½ï¿½
+          S_FAILURE = 4'b0111,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Ö§ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½
+          S_ADM1 = 4'b0101,//ï¿½ï¿½Ê¾inquire
+          S_ADM2 = 4'b0100,//ï¿½ï¿½Ê¾reset
+          S_ADM3 = 4'b1100,//ï¿½ï¿½Ê¾sale
+          S_ADM_INQUIRE = 4'b1101,//ï¿½ï¿½Ê¾ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½
+          S_ADM_ADD = 4'b1111,//ï¿½ï¿½Ê¾ï¿½ï¿½Æ·ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
+          S_RESET = 4'b1110,//ï¿½ï¿½Ê¾ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½finishÈ¡ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½Ô¶ï¿½×ªï¿½ï¿½
+          S_SALE_AMOUNT = 4'b1010,//ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Û½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½finishÈ¡ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½Ô¶ï¿½×ªï¿½ï¿½
+          S_SUC_ADM = 4'b1011,//ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢
+          S_WELCOME = 4'b1001,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó­
+          S_OUT = 4'b1000;//ï¿½ï¿½Æ·ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½Ê¾ï¿½ï¿½sold outï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     always@(*)
     begin
@@ -64,9 +64,11 @@ parameter S_OFF = 4'b0000,//¹Ø»ú×´Ì¬£¬²»ÏÔÊ¾ÈÎºÎÄÚÈÝ
                 
 
             S_INQUIRE:
-            case ({adm_mode, confirm})
-                2'b01: state <= S_ADD_AMOUNT;
-                2'b10, 2'b11: state <= S_ADM1;
+            case ({adm_mode, confirm, out})
+                3'b01x: state <= S_ADD_AMOUNT;
+                3'b10x, 3'b11x: state <= S_ADM1;
+                3'b111: state <= S_OUT;
+                3'b110: state <= S_SALE_AMOUNT;
                 default: state <= S_INQUIRE;
             endcase
            
@@ -159,7 +161,27 @@ parameter S_OFF = 4'b0000,//¹Ø»ú×´Ì¬£¬²»ÏÔÊ¾ÈÎºÎÄÚÈÝ
                 default: state <= S_SALE_AMOUNT;
             endcase
 
+            S_SUC_ADM:
+            case ({main_switch, adm_mode, confirm, return, finish})
+                5'b0xxxx: state <= S_OFF;
+                5'b10xxx: state <= S_INQUIRE;
+                5'b111xx|5'b1101x|5'b11001: state <= S_ADM1;
+                default: state <= S_SALE_AMOUNT;
+            endcase
 
+            S_WELCOME:
+            case ({main_switch, confirm, return, finish})
+                5'b0xxx: state <= S_OFF;
+                5'b11xx|5'b101x|5'b1001: state <= S_INQUIRE;
+                default: state <= S_WELCOME;
+            endcase
+
+            S_OUT: 
+            case ({main_swtich, confirm, return, finish})
+                5'b0xxx: state <= S_OFF;
+                5'b11xx|5'b101x|5'b1001: state <= S_ADM3;
+                default: state <= S_INQUIRE;
+            endcase
             default: 
             state <= S_OFF;
         endcase
